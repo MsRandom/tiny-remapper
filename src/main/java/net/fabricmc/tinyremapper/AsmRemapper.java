@@ -50,7 +50,7 @@ class AsmRemapper extends TrRemapper {
 		if (cls == null) {
 			String newName = tr.fieldMap.get(owner+"/"+MemberInstance.getFieldId(name, desc, tr.ignoreFieldDesc));
 
-			if (newName.equals(name)) {
+			if (newName == null || newName.equals(name)) {
 				return tr.extraRemapper != null ? tr.extraRemapper.mapFieldName(owner, name, desc) : name;
 			}
 
@@ -89,7 +89,7 @@ class AsmRemapper extends TrRemapper {
 		if (cls == null) {
 			String newName = tr.methodMap.get(owner+"/"+MemberInstance.getMethodId(name, desc));
 
-			if (newName.equals(name)) {
+			if (newName == null || newName.equals(name)) {
 				return tr.extraRemapper != null ? tr.extraRemapper.mapMethodName(owner, name, desc) : name;
 			}
 
