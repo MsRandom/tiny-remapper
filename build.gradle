@@ -102,7 +102,15 @@ publishing {
 // A task to ensure that the version being released has not already been released.
 task checkVersion {
 	doFirst {
-		def xml = new URL("${ENV.MAVEN_URL}/${group.replace('.', '/')}/${archivesBaseName}/maven-metadata.xml").text
+		String xml
+
+		try {
+			xml = new URL("${ENV.MAVEN_URL}${project.group.replace('.', '/')}/${archivesBaseName}/maven-metadata.xml").text
+		} catch (FileNotFoundException ignored) {
+			// Never published, safe to continue.
+			return
+		}
+
 		def metadata = new XmlSlurper().parseText(xml)
 		def versions = metadata.versioning.versions.version*.text();
 		if (versions.contains(version)) {
