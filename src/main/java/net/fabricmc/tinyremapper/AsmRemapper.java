@@ -46,7 +46,15 @@ class AsmRemapper extends TrRemapper {
 	@Override
 	public String mapFieldName(String owner, String name, String desc) {
 		ClassInstance cls = getClass(owner);
-		if (cls == null) return name;
+		if (cls == null) {
+            String newName = tr.fieldMap.get(owner+"/"+MemberInstance.getFieldId(name, desc, tr.ignoreFieldDesc));
+
+            if (newName.equals(name)) {
+                return tr.extraRemapper != null ? tr.extraRemapper.mapFieldName(owner, name, desc) : name;
+            }
+
+            return newName;
+		}
 
 		return mapFieldName(cls, name, desc);
 	}
@@ -76,7 +84,15 @@ class AsmRemapper extends TrRemapper {
 		}
 
 		ClassInstance cls = getClass(owner);
-		if (cls == null) return name; // TODO: try to map these from just the mappings?, warn if actual class is missing
+		if (cls == null) {
+			String newName = tr.methodMap.get(owner+"/"+MemberInstance.getMethodId(name, desc));
+
+			if (newName.equals(name)) {
+				return tr.extraRemapper != null ? tr.extraRemapper.mapMethodName(owner, name, desc) : name;
+			}
+
+			return newName;
+		}
 
 		return mapMethodName(cls, name, desc);
 	}

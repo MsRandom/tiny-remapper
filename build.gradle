@@ -11,10 +11,11 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 version = '0.8.6'
 
+def codevAttribute = Attribute.of("codev", Boolean)
 def ENV = System.getenv()
 version = version + (ENV.GITHUB_ACTIONS ? "" : "+local")
 
-group = 'net.fabricmc'
+group = 'net.msrandom'
 archivesBaseName = 'tiny-remapper'
 
 repositories {
@@ -43,7 +44,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 shadowJar {
-	archiveClassifier = 'fat'
+	archiveClassifier = 'codev-fat'
 }
 
 test {
@@ -56,6 +57,8 @@ test {
 }
 
 jar {
+	archiveClassifier = 'codev'
+
 	manifest {
 		attributes	'Implementation-Title': 'TinyRemapper',
 					'Implementation-Version': archiveVersion,
@@ -109,3 +112,11 @@ task checkVersion {
 }
 
 publish.mustRunAfter checkVersion
+
+configurations.all {
+	outgoing {
+		attributes {
+			attribute(codevAttribute, true)
+		}
+	}
+}
