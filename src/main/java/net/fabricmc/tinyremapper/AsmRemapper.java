@@ -47,18 +47,18 @@ class AsmRemapper extends TrRemapper {
 	public String mapFieldName(String owner, String name, String desc) {
 		ClassInstance cls = getClass(owner);
 
-        if (cls != null) {
-            return mapFieldName(cls, name, desc);
-        }
+		if (cls != null) {
+			return mapFieldName(cls, name, desc);
+		}
 
-        String newName = tr.fieldMap.get(owner+"/"+MemberInstance.getFieldId(name, desc, tr.ignoreFieldDesc));
+		String newName = tr.fieldMap.get(owner + "/" + MemberInstance.getFieldId(name, desc, tr.ignoreFieldDesc));
 
-        if (newName == null || newName.equals(name)) {
-            return tr.extraRemapper != null ? tr.extraRemapper.mapFieldName(owner, name, desc) : name;
-        }
+		if (newName == null || newName.equals(name)) {
+			return tr.extraRemapper != null ? tr.extraRemapper.mapFieldName(owner, name, desc) : name;
+		}
 
-        return newName;
-    }
+		return newName;
+	}
 
 	final String mapFieldName(ClassInstance cls, String name, String desc) {
 		MemberInstance member = cls.resolve(TrMember.MemberType.FIELD, MemberInstance.getFieldId(name, desc, tr.ignoreFieldDesc));
@@ -68,7 +68,7 @@ class AsmRemapper extends TrRemapper {
 			return newName;
 		}
 
-		assert (newName = tr.fieldMap.get(cls.getName()+"/"+MemberInstance.getFieldId(name, desc, tr.ignoreFieldDesc))) == null || newName.equals(name);
+		assert (newName = tr.fieldMap.get(cls.getName() + "/" + MemberInstance.getFieldId(name, desc, tr.ignoreFieldDesc))) == null || newName.equals(name);
 
 		return tr.extraRemapper != null ? tr.extraRemapper.mapFieldName(cls.getName(), name, desc) : name;
 	}
@@ -86,18 +86,18 @@ class AsmRemapper extends TrRemapper {
 
 		ClassInstance cls = getClass(owner);
 
-        if (cls != null) {
-            return mapMethodName(cls, name, desc);
-        }
+		if (cls != null) {
+			return mapMethodName(cls, name, desc);
+		}
 
-        String newName = tr.methodMap.get(owner+"/"+MemberInstance.getMethodId(name, desc));
+		String newName = tr.methodMap.get(owner + "/" + MemberInstance.getMethodId(name, desc));
 
-        if (newName == null || newName.equals(name)) {
-            return tr.extraRemapper != null ? tr.extraRemapper.mapMethodName(owner, name, desc) : name;
-        }
+		if (newName == null || newName.equals(name)) {
+			return tr.extraRemapper != null ? tr.extraRemapper.mapMethodName(owner, name, desc) : name;
+		}
 
-        return newName;
-    }
+		return newName;
+	}
 
 	final String mapMethodName(ClassInstance cls, String name, String desc) {
 		MemberInstance member = cls.resolve(TrMember.MemberType.METHOD, MemberInstance.getMethodId(name, desc));
@@ -107,7 +107,7 @@ class AsmRemapper extends TrRemapper {
 			return newName;
 		}
 
-		assert (newName = tr.methodMap.get(cls.getName()+"/"+MemberInstance.getMethodId(name, desc))) == null || newName.equals(name);
+		assert (newName = tr.methodMap.get(cls.getName() + "/" + MemberInstance.getMethodId(name, desc))) == null || newName.equals(name);
 
 		return tr.extraRemapper != null ? tr.extraRemapper.mapMethodName(cls.getName(), name, desc) : name;
 	}
@@ -138,7 +138,7 @@ class AsmRemapper extends TrRemapper {
 
 	@Override
 	public String mapMethodArg(String methodOwner, String methodName, String methodDesc, int lvIndex, String name) {
-		String newName = tr.methodArgMap.get(methodOwner+"/"+MemberInstance.getMethodId(methodName, methodDesc)+lvIndex);
+		String newName = tr.methodArgMap.get(methodOwner + "/" + MemberInstance.getMethodId(methodName, methodDesc) + lvIndex);
 		if (newName != null) return newName;
 
 		ClassInstance cls = getClass(methodOwner);
@@ -147,7 +147,7 @@ class AsmRemapper extends TrRemapper {
 		MemberInstance originatingMethod = cls.resolve(TrMember.MemberType.METHOD, MemberInstance.getMethodId(methodName, methodDesc));
 		if (originatingMethod == null) return name;
 
-		String originatingNewName = tr.methodArgMap.get(originatingMethod.newNameOriginatingCls+"/"+MemberInstance.getMethodId(originatingMethod.name, originatingMethod.desc)+lvIndex);
+		String originatingNewName = tr.methodArgMap.get(originatingMethod.newNameOriginatingCls + "/" + MemberInstance.getMethodId(originatingMethod.name, originatingMethod.desc) + lvIndex);
 
 		return originatingNewName != null ? originatingNewName : name;
 	}
