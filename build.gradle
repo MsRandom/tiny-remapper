@@ -11,7 +11,6 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 version = '0.8.9'
 
-def codevAttribute = Attribute.of("codev", Boolean)
 def ENV = System.getenv()
 version = version + (ENV.GITHUB_ACTIONS ? "" : "+local")
 
@@ -44,7 +43,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 shadowJar {
-	archiveClassifier = 'codev-fat'
+	archiveClassifier = 'fat'
 }
 
 test {
@@ -57,8 +56,6 @@ test {
 }
 
 jar {
-	archiveClassifier = 'codev'
-
 	manifest {
 		attributes	'Implementation-Title': 'TinyRemapper',
 					'Implementation-Version': archiveVersion,
@@ -120,11 +117,3 @@ task checkVersion {
 }
 
 publish.mustRunAfter checkVersion
-
-configurations.all {
-	outgoing {
-		attributes {
-			attribute(codevAttribute, true)
-		}
-	}
-}

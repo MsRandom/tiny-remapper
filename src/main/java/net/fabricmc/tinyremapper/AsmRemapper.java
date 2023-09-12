@@ -47,18 +47,18 @@ class AsmRemapper extends TrRemapper {
 	public String mapFieldName(String owner, String name, String desc) {
 		ClassInstance cls = getClass(owner);
 
-		if (cls == null) {
-			String newName = tr.fieldMap.get(owner+"/"+MemberInstance.getFieldId(name, desc, tr.ignoreFieldDesc));
+        if (cls != null) {
+            return mapFieldName(cls, name, desc);
+        }
 
-			if (newName == null || newName.equals(name)) {
-				return tr.extraRemapper != null ? tr.extraRemapper.mapFieldName(owner, name, desc) : name;
-			}
+        String newName = tr.fieldMap.get(owner+"/"+MemberInstance.getFieldId(name, desc, tr.ignoreFieldDesc));
 
-			return newName;
-		}
+        if (newName == null || newName.equals(name)) {
+            return tr.extraRemapper != null ? tr.extraRemapper.mapFieldName(owner, name, desc) : name;
+        }
 
-		return mapFieldName(cls, name, desc);
-	}
+        return newName;
+    }
 
 	final String mapFieldName(ClassInstance cls, String name, String desc) {
 		MemberInstance member = cls.resolve(TrMember.MemberType.FIELD, MemberInstance.getFieldId(name, desc, tr.ignoreFieldDesc));
@@ -86,18 +86,18 @@ class AsmRemapper extends TrRemapper {
 
 		ClassInstance cls = getClass(owner);
 
-		if (cls == null) {
-			String newName = tr.methodMap.get(owner+"/"+MemberInstance.getMethodId(name, desc));
+        if (cls != null) {
+            return mapMethodName(cls, name, desc);
+        }
 
-			if (newName == null || newName.equals(name)) {
-				return tr.extraRemapper != null ? tr.extraRemapper.mapMethodName(owner, name, desc) : name;
-			}
+        String newName = tr.methodMap.get(owner+"/"+MemberInstance.getMethodId(name, desc));
 
-			return newName;
-		}
+        if (newName == null || newName.equals(name)) {
+            return tr.extraRemapper != null ? tr.extraRemapper.mapMethodName(owner, name, desc) : name;
+        }
 
-		return mapMethodName(cls, name, desc);
-	}
+        return newName;
+    }
 
 	final String mapMethodName(ClassInstance cls, String name, String desc) {
 		MemberInstance member = cls.resolve(TrMember.MemberType.METHOD, MemberInstance.getMethodId(name, desc));
