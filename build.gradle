@@ -9,7 +9,7 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-version = '0.8.6'
+version = '0.8.9'
 
 def codevAttribute = Attribute.of("codev", Boolean)
 def ENV = System.getenv()
